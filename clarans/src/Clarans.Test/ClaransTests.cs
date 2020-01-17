@@ -16,7 +16,6 @@ namespace Clarans.Test
 
             Assert.Equal(0, cl.Distance(v1, v2));
 
-
             v1 = new List<double> { 1, 1, 1 };
             v2 = new List<double> { 2, 2, 2 };
 
@@ -95,10 +94,33 @@ namespace Clarans.Test
             var v4 = new List<double> { 9, 9, 9 };
             var v = new List<List<double>> { v1, v2, v3, v4 };
 
-            var clusters = cl.Process(v, 1, 10, 2);
+            var clusters = cl.Process(v, 1, 100, 2);
 
             Assert.Equal(2, clusters.Count);
-            // TODO: check medoids + items in cluster
+
+            var cl1 = clusters.Where(cl => cl.Key[0] == 1 || cl.Key[0] == 2).First();
+            var cl2 = clusters.Where(cl => cl.Key[0] == 8 || cl.Key[0] == 9).First();
+
+            Assert.Equal(2, cl1.Value.Count);
+            Assert.Equal(2, cl2.Value.Count);
+
+            var m1 = cl1.Key;
+            var m2 = cl2.Key;
+
+            Assert.InRange(m1[0], 1, 2);
+            Assert.InRange(m2[0], 8, 9);
+
+            var cl1_v1 = cl1.Value.FirstOrDefault(v => v[0] == 1);
+            var cl1_v2 = cl1.Value.FirstOrDefault(v => v[0] == 2);
+
+            Assert.NotNull(cl1_v1);
+            Assert.NotNull(cl1_v2);
+
+            var cl2_v1 = cl2.Value.FirstOrDefault(v => v[0] == 8);
+            var cl2_v2 = cl2.Value.FirstOrDefault(v => v[0] == 9);
+
+            Assert.NotNull(cl2_v1);
+            Assert.NotNull(cl2_v2);
         }
     }
 }

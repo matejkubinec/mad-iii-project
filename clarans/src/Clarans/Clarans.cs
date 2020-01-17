@@ -15,7 +15,7 @@ namespace Clarans
         /// <param name="maxNeighbours">The maximum number of neighbours examined.</param>
         /// <param name="numLocal">Amount of iterations for solving the problem.</param>
         /// <param name="k">Number of clusters.</param>
-        public List<List<double>> Process(List<List<double>> data, int maxNeighbours, int numLocal, int k)
+        public Dictionary<List<double>, List<List<double>>> Process(List<List<double>> data, int maxNeighbours, int numLocal, int k)
         {
             if (data.Count < 0)
             {
@@ -33,7 +33,7 @@ namespace Clarans
             }
 
             var minCost = double.PositiveInfinity;
-            var bestNode = new List<List<double>>();
+            var bestNode = new Dictionary<List<double>, List<List<double>>>();
 
             for (var i = 0; i < numLocal; i++)
             {
@@ -83,14 +83,14 @@ namespace Clarans
 
                 if (totalCost < minCost)
                 {
-                    bestNode = medoids;
+                    bestNode = clusters;
                 }
             }
 
             return bestNode;
         }
 
-        public double ComputeCost(IDictionary<List<double>, List<List<double>>> clusters)
+        public double ComputeCost(Dictionary<List<double>, List<List<double>>> clusters)
         {
             var cost = 0.0;
             foreach (var medoid in clusters.Keys)
@@ -129,7 +129,7 @@ namespace Clarans
             return samples;
         }
 
-        public IDictionary<List<double>, List<List<double>>> Clusterize(List<List<double>> medoids, List<List<double>> data)
+        public Dictionary<List<double>, List<List<double>>> Clusterize(List<List<double>> medoids, List<List<double>> data)
         {
             var clusters = new Dictionary<List<double>, List<List<double>>>();
 
