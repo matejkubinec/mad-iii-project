@@ -1,7 +1,10 @@
-from pyclustering.cluster.clarans import clarans
-from pyclustering.utils import timedcall
 import json
-
+from clarans import compute_clarans
+from kmedoids import compute_kmedoids
+from kmeans import compute_kmeans
+from kmedians import compute_kmedians
+from spectral_clustering import compute_spectral_clustering
+from hierarchical_clustering import compute_agglomerative_clustering
 
 def load_data(file_path):
     data = []
@@ -25,7 +28,7 @@ def load_data(file_path):
     return data
 
 
-def save_results(clusters, medoids, data):
+def save_results(clusters, medoids, seconds, data, name, filename):
     clusters_data = []
     for cl in clusters:
         cl_data = []
@@ -41,12 +44,14 @@ def save_results(clusters, medoids, data):
 
     data = {
         'clusters': clusters_data,
-        'medoids': medoids_data
+        'medoids': medoids_data,
+        'seconds': seconds,
+        'name': name
     }
 
     json_str = json.dumps(data)
 
-    with open('pyclustering-results.json', 'w') as f:
+    with open(f'../results/{filename}.json', 'w') as f:
         f.write(json_str)
 
 
@@ -59,19 +64,39 @@ if __name__ == "__main__":
     ]
     file_path = datasets[0]
     data = load_data(file_path)
+    
     k = 5
+
+    # Clarans
     max_neighbour = 5
     num_local = 5
 
-    clarans_instance = clarans(data, k, num_local, max_neighbour)
+    filename = 'pyclustering-results'
+    name = 'PyClustering - Clarans'
+    clusters, medoids, seconds = compute_clarans(data, k, max_neighbour, num_local)
+    save_results(clusters, medoids, seconds, data, name, filename)
 
-    clarans_instance.process()
+    filename = 'kmedoids-results'
+    name = 'KMedoids'
+    clusters, medoids, seconds = compute_kmedoids(data, k)
+    save_results(clusters, medoids, seconds, data, name, filename)
+    
+    filename = 'kmeans-results'
+    name = 'KMeans'
+    clusters, medoids, seconds = compute_kmeans(data, k)
+    save_results(clusters, medoids, seconds, data, name, filename)
 
-    # (ticks, result) = timedcall(clarans_instance.process)
-    # print("Execution time : ", ticks, "\n")
+    # filename = 'kmedians-results'
+    # name = 'KMedians'
+    # clusters, medoids, seconds = compute_kmedians(data, k)
+    # save_results(clusters, medoids, seconds, data, name, filename)
 
-    clusters = clarans_instance.get_clusters()
+    filename = 'agglomerative-clustering-results'
+    name = 'Hierarchical Clustering - Agglomerative'
+    clusters, medoids, seconds = compute_agglomerative_clustering(data, k)
+    save_results(clusters, medoids, seconds, data, name, filename)
 
-    medoids = clarans_instance.get_medoids()
-
-    save_results(clusters, medoids, data)
+    filename = 'spectral-clustering-results'
+    name = 'Spectral Clustering'
+    clusters, medoids, seconds = compute_spectral_clustering(data, k)
+    save_results(clusters, medoids, seconds, data, name, filename)

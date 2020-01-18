@@ -2,6 +2,39 @@ import matplotlib.pyplot as plt
 from sklearn import metrics
 from dunn_index import dunn_index
 import json
+from utils import labelize_clusters
+import os
+
+
+
+def load_filenames():
+    res_dir = "../results/"
+    files = os.listdir(res_dir)
+    filenames = map(lambda f: res_dir + f,files)
+    return list(filenames)
+
+def visualise_davies_bouldin_score(results):
+    indexes = [i for i in range(len(results))]
+    names = []
+    scores = []
+
+    for r in results:
+        names.append(r["name"])
+
+        items, labels = labelize_clusters(r["clusters"])
+
+        score = metrics.davies_bouldin_score(items, labels)
+        scores.append(score)
+
+    _, ax = plt.subplots()
+
+    fig.set_size_inches(5, 20)
+
+    ax.set_xticks(indexes)
+    ax.set_xticklabels(names)
+    ax.bar(indexes, scores)
+
+    plt.savefig("images/davies_bouldin_score.png", dpi=500)
 
 def visualize_dunn_index(results):
     indexes = []
@@ -22,10 +55,50 @@ def visualize_dunn_index(results):
     ax.set_xticklabels(names)
     ax.bar(indexes, dunn_indexes)
 
-    plt.savefig("dunn_index.png")
+    plt.savefig("images/dunn_index.png")
 
-def silhouette_score(medoids, clusters):
-    pass
+def visualise_silhouette_coefficient(results):
+    indexes = [i for i in range(len(results))]
+    names = []
+    scores = []
+
+    for r in results:
+        names.append(r["name"])
+
+        items, labels = labelize_clusters(r["clusters"])
+
+        score = metrics.silhouette_score(items, labels)
+        scores.append(score)
+
+    _, ax = plt.subplots()
+
+    ax.set_xticks(indexes)
+    ax.set_xticklabels(names)
+    ax.bar(indexes, scores)
+
+    plt.savefig("images/silhouette_coefficient.png")
+
+def visualise_adjusted_rand_index(results):
+    indexes = [i for i in range(len(results))]
+    names = []
+    scores = []
+
+    for r in results:
+        names.append(r["name"])
+
+        items, labels = labelize_clusters(r["clusters"])
+
+        score = metrics.calinski_harabasz_score(items, labels)
+        scores.append(score)
+
+    _, ax = plt.subplots()
+
+    ax.set_xticks(indexes)
+    ax.set_xticklabels(names)
+    ax.bar(indexes, scores)
+
+    plt.savefig("images/calinski_harabasz_score.png")
+
 
 def load_result(filename):
     json_str = ''
@@ -48,23 +121,16 @@ def visualise(medoids, clusters):
     plt.savefig("visualised.png")
 
 if __name__ == "__main__":
-    names = [
-        "PyClustering - Clarans",
-        "KUB0462 - Clarans"
-    ]
-
-    filenames = [
-        '../results/pyclustering-results.json',
-        '../results/clarans-csharp-results.json',
-    ]
+    filenames = load_filenames()
 
     results = list(map(load_result, filenames))
 
-    for r, n in zip(results, names):
-        r['name'] = n
-
-    # filename = filenames[0]
-    #  = load_result(filename)
-    # visualise(medoids, clusters)
+    for r in results:
+        if 'name' not in r.keys():
+            r['name'] = "KUB0462 - Clarans"
+            r['seconds'] = 0
     
     visualize_dunn_index(results)
+    visualise_silhouette_coefficient(results)
+    visualise_adjusted_rand_index(results)
+    visualise_davies_bouldin_score(results)

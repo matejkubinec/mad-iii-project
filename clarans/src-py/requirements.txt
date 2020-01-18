@@ -1,1 +1,3 @@
-pyclustering>=0.9.3.1
+pyclustering
+scikit-learn
+numpy

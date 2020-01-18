@@ -48,6 +48,22 @@ def get_average_distance(cluster, centroid):
 
     return sum(distances) / len(distances)
 
+def labelize_clusters(clusters):
+    items = []
+    labels = []
+
+    l = 0
+    for c in clusters:
+    
+        for v in c:
+            items.append(v)
+            labels.append(l)
+    
+        l += 1
+
+    return items, labels
+
+
 if __name__ == "__main__":
     a1 = [1, 1, 1, 1, 1, 1, 1, 1, 1]
     a2 = [3, 3, 3, 3, 3, 3, 3, 3, 3]
