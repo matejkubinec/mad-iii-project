@@ -1,7 +1,0 @@
----
-maps: true
----
-
-# CLARANS
-
-test

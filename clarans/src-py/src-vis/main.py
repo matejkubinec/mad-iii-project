@@ -13,7 +13,12 @@ def load_result(filename):
         lines = f.readlines()
         json_str = ''.join(lines)
 
-    return json.loads(json_str)
+    data = json.loads(json_str)
+
+    if data["name"].startswith("Hierarchical"):
+        data["name"] = "Agglomerative"
+
+    return data
 
 
 def load_filenames(dataset):
@@ -24,7 +29,7 @@ def load_filenames(dataset):
 
 
 def get_size(results):
-    col_width = 3
+    col_width = 2
     return col_width * len(results), 5
 
 
@@ -58,7 +63,8 @@ def visualise_seconds(subfolder, dataset, results):
     ax.set_xticklabels(names)
     ax.bar(indexes, scores, color=colors)
 
-    plt.title("Seconds")
+    plt.margins(0.01)
+    plt.title(f"{dataset.upper()}: Seconds")
     plt.savefig(image_path + "/seconds.png")
 
 
@@ -85,6 +91,9 @@ def visualise_davies_bouldin_score(subfolder, dataset, results):
         score = metrics.davies_bouldin_score(items, labels)
         scores.append(score)
 
+        name = r['name']
+        print(f'davies: {name} - {score}')
+
     fig, ax = plt.subplots()
     width, height = get_size(results)
     fig.set_size_inches(width, height)
@@ -93,7 +102,8 @@ def visualise_davies_bouldin_score(subfolder, dataset, results):
     ax.set_xticklabels(names)
     ax.bar(indexes, scores, color=colors)
 
-    plt.title("Davies-Bouldin Score")
+    plt.margins(0.01)
+    plt.title(f"{dataset.upper()}: Davies-Bouldin Score")
     plt.savefig(image_path + "/davies_bouldin_score.png")
 
 
@@ -118,7 +128,11 @@ def visualize_dunn_index(subfolder, dataset, results):
 
         names.append(name)
         indexes.append(i)
-        dunn_indexes.append(dunn_index(clusters))
+        score = dunn_index(clusters)
+        dunn_indexes.append(score)
+
+        name = res['name']
+        print(f'dunn: {name} - {score}')
 
     fig, ax = plt.subplots()
     width, height = get_size(results)
@@ -128,7 +142,8 @@ def visualize_dunn_index(subfolder, dataset, results):
     ax.set_xticklabels(names)
     ax.bar(indexes, dunn_indexes, color=colors)
 
-    plt.title("Dunn Score")
+    plt.margins(0.01)
+    plt.title(f"{dataset.upper()}: Dunn Score")
     plt.savefig(image_path + "/dunn_index.png")
 
 
@@ -155,6 +170,9 @@ def visualise_silhouette_coefficient(subfolder, dataset, results):
         score = metrics.silhouette_score(items, labels)
         scores.append(score)
 
+        name = r['name']
+        print(f'silhoette: {name} - {score}')
+
     fig, ax = plt.subplots()
     width, height = get_size(results)
     fig.set_size_inches(width, height)
@@ -163,11 +181,12 @@ def visualise_silhouette_coefficient(subfolder, dataset, results):
     ax.set_xticklabels(names)
     ax.bar(indexes, scores, color=colors)
 
-    plt.title("Silhouette Coefficient Score")
+    plt.margins(0.01)
+    plt.title(f"{dataset.upper()}: Silhouette Coefficient Score")
     plt.savefig(image_path + "/fsilhouette_coefficient.png")
 
 
-def visualise_adjusted_rand_index(subfolder, dataset, results):
+def visualise_calinski_harabasz(subfolder, dataset, results):
     indexes = [i for i in range(len(results))]
     names = []
     scores = []
@@ -190,6 +209,9 @@ def visualise_adjusted_rand_index(subfolder, dataset, results):
         score = metrics.calinski_harabasz_score(items, labels)
         scores.append(score)
 
+        name = r['name']
+        print(f'calinski: {name} - {score}')
+
     fig, ax = plt.subplots()
     width, height = get_size(results)
     fig.set_size_inches(width, height)
@@ -198,33 +220,36 @@ def visualise_adjusted_rand_index(subfolder, dataset, results):
     ax.set_xticklabels(names)
     ax.bar(indexes, scores, color=colors)
 
-    plt.title("Adjusted Rand Index Score")
+    plt.margins(0.01)
+    plt.title(f"{dataset.upper()}: Calinski Harabasz Score")
     plt.savefig(image_path + "/calinski_harabasz_score.png")
 
 
 if __name__ == "__main__":
-    datasets = ["iris", "wine", "yeast"]
+    #datasets = ["iris", "wine", "yeast"]
+    datasets = ["yeast"]
+
+    # for dataset in datasets:
+    #     filenames = load_filenames(dataset)
+    #     filenames = filter(lambda f: "pyclustering" not in f, filenames)
+    #     subfolder = "all"
+    #     results = list(map(load_result, filenames))
+
+    #     visualize_dunn_index(subfolder, dataset, results)
+    #     visualise_silhouette_coefficient(subfolder, dataset, results)
+    #     visualise_calinski_harabasz(subfolder, dataset, results)
+    #     visualise_davies_bouldin_score(subfolder, dataset, results)
+    #     visualise_seconds(subfolder, dataset, results)
 
     for dataset in datasets:
         filenames = load_filenames(dataset)
-        filenames = filter(lambda f: "pyclustering" not in f, filenames)
-        subfolder = "all"
-        results = list(map(load_result, filenames))
-
-        visualize_dunn_index(subfolder, dataset, results)
-        visualise_silhouette_coefficient(subfolder, dataset, results)
-        visualise_adjusted_rand_index(subfolder, dataset, results)
-        visualise_davies_bouldin_score(subfolder, dataset, results)
-        visualise_seconds(subfolder, dataset, results)
-
-    for dataset in datasets:
-        filenames = load_filenames(dataset)
-        filenames = filter(lambda f: "clarans" in f or "pyclustering" in f, filenames)
+        filenames = filter(
+            lambda f: "clarans" in f or "pyclustering" in f, filenames)
         subfolder = "pyclustering"
         results = list(map(load_result, filenames))
 
         visualize_dunn_index(subfolder, dataset, results)
         visualise_silhouette_coefficient(subfolder, dataset, results)
-        visualise_adjusted_rand_index(subfolder, dataset, results)
+        visualise_calinski_harabasz(subfolder, dataset, results)
         visualise_davies_bouldin_score(subfolder, dataset, results)
         visualise_seconds(subfolder, dataset, results)
