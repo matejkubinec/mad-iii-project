@@ -7,6 +7,7 @@ namespace Clarans
     public class Clarans
     {
         private Random _random = new Random();
+        private int MAX_NEIGHBOUR = 100;
 
         /// <summary>
         /// Computes CLARANS clustering algorithm on supplied data.
@@ -41,8 +42,14 @@ namespace Clarans
                 var clusters = Clusterize(medoids, data);
 
                 var j = 0;
+                var iter = 0;
                 while (j < maxNeighbours)
                 {
+                    if (iter++ > MAX_NEIGHBOUR)
+                    {
+                        break;
+                    }
+
                     var medoid = PickRandom(medoids);
                     var neighbour = PickRandom(clusters[medoid]);
                     var previousCost = ComputeCost(clusters);
@@ -78,11 +85,11 @@ namespace Clarans
                     }
                 }
 
-
                 var totalCost = ComputeCost(clusters);
 
                 if (totalCost < minCost)
                 {
+                    minCost = totalCost;
                     bestNode = clusters;
                 }
             }

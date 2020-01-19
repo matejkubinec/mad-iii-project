@@ -1,23 +1,24 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Clarans
 {
     public class DataWriter
     {
-        public void WriteResult(List<List<List<double>>> clusters, List<List<double>> medoids)
+        public void WriteResult(string dataset, List<List<List<double>>> clusters, List<List<double>> medoids, double seconds)
         {
             var data = new
             {
+                name = "KUB0462 - CLARANS",
                 clusters,
-                medoids
+                medoids,
+                seconds
             };
 
             var json = JsonConvert.SerializeObject(data);
 
-            File.WriteAllText("clarans-csharp-results.json", json);
+            File.WriteAllText($"../../results/{dataset}/clarans-csharp-results.json", json);
         }
     }
 }
