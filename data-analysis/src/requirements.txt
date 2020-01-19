@@ -1,7 +1,0 @@
-plotly
-pandas
-rope
-autopep8
-pylint
-chart_studio
-psutil
