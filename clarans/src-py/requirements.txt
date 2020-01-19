@@ -1,0 +1,6 @@
+pyclustering
+scikit-learn
+numpy
+matplotlib
+autopep8
+rope
