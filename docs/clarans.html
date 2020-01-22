@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CLARANS</title>
+    <style>
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .img-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .img-grid img {
+            width: 100%;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .comparison-grid img {
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table, tr, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>CLARANS - KUB0462</h1>
+    <h2>Popis algoritmu</h2>
+    <p>
+        <strong>CLARANS</strong> - Clustering Large Applications based on RANdomized Search
+    </p>
+    <ul>
+        <li>Vylepšenie algoritmu CLARA</li>
+        <li>Prezentuje trade-off medzi výpočetným výkonom a efektívnosťou použitím vzorkovania na vytvorenie zhlukov.
+        </li>
+    </ul>
+    <h3>Parametre</h3>
+    <ul>
+        <li><strong>k</strong> - počet zhlukov</li>
+        <li><strong>NumLocal</strong> - počet iterácií</li>
+        <li><strong>MaxNeighbour</strong> - maximálny počet susedov, ktorý sa vymenia</li>
+    </ul>
+    <h2>Porovnanie s ostatnými algoritmami</h2>
+    <p>
+        Algoritmy: (Zľava do prava)
+        <ol>
+            <li>Aglomeratívne hierarchické zhlukovanie</li>
+            <li>Vlastná implementácia CLARANS</li>
+            <li>KMeans</li>
+            <li>KMedoids</li>
+            <li>Spectral Clustering</li>
+        </ol>
+        Datové sady (Zľava do prava)
+        <ol>
+            <li>IRIS</li>
+            <li>WINE</li>
+            <li>YEAST</li>
+        </ol>
+    </p>
+    <h3>Calinski Harabasz</h3>
+    <ul>
+        <li>
+            Zname aj ako Variance Ratio Criterion
+        </li>
+        <li>
+            Pomer medzi rozptylom vnútri zhlukov a medzi zhlukmi navzájom
+        </li>
+    </ul>
+    <div class="img-grid">
+        <div><img src="./static/clarans/all/iris/calinski_harabasz_score.png" alt=""></div>
+        <div><img src="./static/clarans/all/wine/calinski_harabasz_score.png" alt=""></div>
+        <div><img src="./static/clarans/all/yeast/calinski_harabasz_score.png" alt=""></div>
+    </div>
+    <h3>Davies-Bouldin</h3>
+    <ul>
+        <li>
+            Vnútorné ohodnotenie
+        </li>
+        <li>
+            Pomer medzi rozmiestnením vnútri zhluku a zhlukmi navzájom
+        </li>
+        <li>
+            Nižšie skóre lepší výsledok
+        </li>
+    </ul>
+    <div class="img-grid">
+        <div><img src="./static/clarans/all/iris/davies_bouldin_score.png" alt=""></div>
+        <div><img src="./static/clarans/all/wine/davies_bouldin_score.png" alt=""></div>
+        <div><img src="./static/clarans/all/yeast/davies_bouldin_score.png" alt=""></div>
+    </div>
+    <h3>Dunn Index</h3>
+    <ul>
+        <li>
+            Skóre záleží na použitej metrike (Euklidovská)
+        </li>
+        <li>
+            Pomer medzi minimálnou vzdialenosťou medzi zhlukmi a maximálnou vnútri zhluku
+        </li>
+    </ul>
+    <div class="img-grid">
+        <div><img src="./static/clarans/all/iris/dunn_index.png" alt=""></div>
+        <div><img src="./static/clarans/all/wine/dunn_index.png" alt=""></div>
+        <div><img src="./static/clarans/all/yeast/dunn_index.png" alt=""></div>
+    </div>
+    <h3>Silhouette Coefficient</h3>
+    <ul>
+        <li>Podobnosť objektov k ostatným v zhlukoch</li>
+    </ul>
+    <div class="img-grid">
+        <div><img src="./static/clarans/all/iris/fsilhouette_coefficient.png" alt=""></div>
+        <div><img src="./static/clarans/all/wine/fsilhouette_coefficient.png" alt=""></div>
+        <div><img src="./static/clarans/all/yeast/fsilhouette_coefficient.png" alt=""></div>
+    </div>
+    <h3>Výkon</h3>
+    <ul>
+        <li>Počet sekúnd behu programu.</li>
+    </ul>
+    <div class="img-grid">
+        <div><img src="./static/clarans/all/iris/seconds.png" alt=""></div>
+        <div><img src="./static/clarans/all/wine/seconds.png" alt=""></div>
+        <div><img src="./static/clarans/all/yeast/seconds.png" alt=""></div>
+    </div>
+    <h2>Porovnanie s PyClustering</h2>
+    <p>
+        <a href="https://github.com/annoviko/pyclustering">PyClustering</a> <br>
+        Porovnanie bolo vykonané na datasete YEAST, s rovnakými parametrami.
+    </p>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Algoritmus</th>
+                    <th>Calinski Harabasz</th>
+                    <th>Davies Bouldin</th>
+                    <th>Dunn Index</th>
+                    <th>Silhouette Coefficient</th>
+                    <th>Seconds</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>CLARANS</td>
+                    <td align="right">212.65</td>
+                    <td align="right">1.71</td>
+                    <td align="right">0.22</td>
+                    <td align="right">0.11</td>
+                    <td align="right">0.34</td>
+                </tr>
+                <tr>
+                    <td>PyClustering</td>
+                    <td align="right">215.03</td>
+                    <td align="right">1.63</td>
+                    <td align="right">0.20</td>
+                    <td align="right">0.09</td>
+                    <td align="right">588.40</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="comparison-grid">
+        <div><img src="./static/clarans/pyclustering/yeast/calinski_harabasz_score.png" alt=""></div>
+        <div><img src="./static/clarans/pyclustering/yeast/davies_bouldin_score.png" alt=""></div>
+        <div><img src="./static/clarans/pyclustering/yeast/dunn_index.png" alt=""></div>
+        <div><img src="./static/clarans/pyclustering/yeast/fsilhouette_coefficient.png" alt=""></div>
+        <div><img src="./static/clarans/pyclustering/yeast/seconds.png" alt=""></div>
+    </div>
+</body>
+
+</html>
