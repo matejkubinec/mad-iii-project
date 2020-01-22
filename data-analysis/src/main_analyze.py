@@ -37,7 +37,7 @@ with open(f'./data/clustering/{k}.txt', 'r') as f:
 cl_df = pd.read_csv('./data/data_to_cluster.csv', index_col=0)
 cl_df['labels'] = labels
 
-cl_df.sort_values(by=['electricity_consume_total'])
+cl_df.sort_values(by=['electricity_consume_total'])[['state', 'fips', 'electricity_consume_total']]
 
 #
 # Plot Maps
