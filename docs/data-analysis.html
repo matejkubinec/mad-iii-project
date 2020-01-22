@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Data Analysis</title>
+    <style>
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .maps-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .maps-container img {
+            width: 100%;
+        }
+
+        .box-plots-container > div, 
+        .hist-container > div {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .box-plots-container img,
+        .hist-container img {
+            width: 100%;
+        }
+
+        .clustering-analysis > div:nth-child(2n + 1) {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr; 
+        }
+
+        .clustering-analysis > div:nth-child(2n) {
+            display: grid;
+            grid-template-columns: 1fr; 
+        }
+
+        .clustering-analysis > div:nth-child(2n) > div {
+            margin: 0 4em;
+        }
+
+        .clustering-analysis img {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Data Analysis - Deep Solar Dataset</h1>
+    <h2>Popis datasetu</h2>
+    <p>
+        Dáta pochádzajú <a href="http://web.stanford.edu/group/deepsolar/home">DeepSolar</a>
+        projektu. DeepSolar je deep learning framework ktorý analyzuje satelitné dáta
+        na identifikáciu GPS lokácií a veľkostí solárnych fotovoltalických (PV) panelov.
+    </p>
+    <p>
+        Datová sada obsahuje 169 atribútov a 72 538 záznamov, z toho 18 435
+        obsahuje NaN záznamy.
+    </p>
+    <p>
+        Z datovej sady som vybral 14 atribútov, v týchto záznamoch malo
+        6128 NaN hodnoty, tie som pri analýze odstránil. Po odstranení
+        ostalo 66 402 záznamov. 
+    </p>
+    <h3>Popis atribútov</h3>
+    <p>
+        <ul>
+            <li>
+                <strong>state</strong> - štát
+            </li>
+            <li>
+                <strong>fips</strong> - fips kód oblasti
+            </li>
+            <li>
+                <strong>solar_system_count</strong> - počet solárnych panelov
+            </li>
+            <li>
+                <strong>total_panel_area</strong> - plocha pokrytá solárnymi panelmi
+            </li>
+            <li>
+                <strong>number_of_solar_system_per_household</strong> - 
+                počet solárnych panelov v domácnosti
+            </li>
+            <li>
+                <strong>avg_electricity_retail_rate</strong> - 
+                priemerná cena elektriny
+            </li>
+            <li>
+                <strong>electricity_consume_total</strong> - 
+                celková spotreba energie
+            </li>
+            <li>
+                <strong>daily_solar_radiation</strong> - 
+                priemerná radiácia slnka (Kwh/meter štvorcový) za deň
+            </li>
+            <li>
+                <strong>heating_degree_days</strong> - 
+                počet dní, kedy je priemerná teplota menšia než 18
+                stupňov, indikuje, či je nutné vykurovať
+            </li>
+            <li>
+                <strong>cooling_degree_days</strong> - 
+                počet dní, kedy je priemerná teplota vačšia ako 18
+                stupňov
+            </li>
+            <li>
+                <strong>earth_temperature</strong> - 
+                templota na povrchu
+            </li>
+            <li>
+                <strong>wind_speed</strong> - 
+                priemerná rýchlosť vetra
+            </li>
+            <li>
+                <strong>frost_days</strong> -
+                denná akumulácia stupňov kedy je priemerná denná teplota
+                nižšia než 0 stupňov Celzia
+            </li>
+        </ul>
+    </p>
+    <h2>Mapy</h2>
+    <div class="maps-container">
+        <div><img width="600" src="./static/data-analysis/maps/solar_system_count_by_state.jpg"></div>
+        <div><img width="800" src="./static/data-analysis/maps/solar_system_count_by_fips.jpg"></div>
+    </div>
+    <p>
+        Môžeme vidieť, že najvačší počet solárnych panelov, s veľkým odskokom má
+        Kalifornia, za ňou následuje Florida. 
+    </p>
+    <p>
+        Môžeme vidieť, že vačšina solárnych panelov sa vyskytuje na západnom a 
+        východnom pobreží, zaťialčo vo vnútrozemí sa nevyskytuje veľký počet panelov.
+    </p>
+    <p>
+        Počet solárnych panelov vo vnútrozemí je vo veľkej miere sústredený do 
+        miest/menších oblasti.
+    </p>
+    <h2>Histogramy</h2>
+    <div class="hist-container">
+        <div>
+            <div><img src="./static/data-analysis/hist/daily_solar_radiation.jpg"></div>
+            <div><img src="./static/data-analysis/hist/cooling_degree_days.jpg"></div>
+            <div><img src="./static/data-analysis/hist/heating_degree_days.jpg"></div>
+            <div><img src="./static/data-analysis/hist/earth_temperature.jpg"></div>
+        </div>
+        <div>
+            <div><img src="./static/data-analysis/hist/frost_days.jpg"></div>
+            <div><img src="./static/data-analysis/hist/wind_speed.jpg"></div>
+            <div><img src="./static/data-analysis/hist/avg_electricity_retail_rate.jpg"></div>
+            <div><img src="./static/data-analysis/hist/electricity_consume_total.jpg"></div>
+        </div>
+        <div>
+            <div><img src="./static/data-analysis/hist/solar_system_count.jpg"></div>
+            <div><img src="./static/data-analysis/hist/total_panel_area.jpg"></div>
+            <div><img src="./static/data-analysis/hist/number_of_solar_system_per_household.jpg"></div>
+        </div>
+    </div>
+    <p>
+        Pri počte solárnych panelov, celkovej plochy solárnych panelov, celkovej spotreby elektrickej energie vidíme, že
+        vačšina krajov má nízke hodnoty, s výnimkou pár krajov s vysokými hodnotami. Ostatné atribúty majú viac menej
+        normálne rozdelenie. 
+    </p>
+    <h2>Box Plot</h2>
+    <div class="box-plots-container">
+        <div>
+            <div><img src="./static/data-analysis/box/daily_solar_radiation.jpg"></div>
+            <div><img src="./static/data-analysis/box/cooling_degree_days.jpg"></div>
+            <div><img src="./static/data-analysis/box/heating_degree_days.jpg"></div>
+            <div><img src="./static/data-analysis/box/earth_temperature.jpg"></div>
+        </div>
+        <div>
+            <div><img src="./static/data-analysis/box/frost_days.jpg"></div>
+            <div><img src="./static/data-analysis/box/wind_speed.jpg"></div>
+            <div><img src="./static/data-analysis/box/avg_electricity_retail_rate.jpg"></div>
+            <div><img src="./static/data-analysis/box/electricity_consume_total.jpg"></div>
+        </div>
+        <div>
+            <div><img src="./static/data-analysis/box/solar_system_count.jpg"></div>
+            <div><img src="./static/data-analysis/box/total_panel_area.jpg"></div>
+            <div><img src="./static/data-analysis/box/number_of_solar_system_per_household.jpg"></div>
+        </div>
+    </div>
+    <p>
+        Pri box plot-och vidíme, že atribúty spojené so solárnymi panelmi majú vysoký počet odľahlých pozorovaní
+        (to sa dá predpokladať kvôli exponencionálnemu rozloženiu atribútov). Pri spotrebe elektrickej energie
+        máme jedno výrazne odľahlé pozorovanie, tým je DC.
+    </p>
+    <h2>Zhlukovanie</h2>
+    <h3>Vyber počtu zhlukov</h3>
+    <div style="display: flex;">
+        <img style="width: 100%;" src="./static/data-analysis/clustering_evaluation/silhouette_coefficient.jpg" alt="">
+        <img style="width: 100%;" src="./static/data-analysis/clustering_evaluation/davies_bouldin.jpg" alt="">
+    </div>
+    <p>
+        Na základe silhouette score a davies boulding indexu som zvolil počet zhlukov <strong>5</strong>.
+    </p>
+    <h3>Zhluky</h3>
+    <h4>Zhluky - Mapy</h4>
+    <div style="display: flex;">
+        <img style="width: 50%;" src="./static/data-analysis/maps/states_cluster.jpg" alt="">
+        <img style="width: 50%;" src="./static/data-analysis/maps/counties_cluster.jpg" alt="">
+    </div>
+    <h4>Zhluky - Analýza</h4>
+    <div class="clustering-analysis">
+        <div>
+            <div><img src="./static/data-analysis/clustering_bar/solar_system_count.jpg" alt=""></div>
+            <div><img src="./static/data-analysis/clustering_bar/number_of_solar_system_per_household.jpg" alt=""></div>
+            <div><img src="./static/data-analysis/clustering_bar/total_panel_area.jpg" alt=""></div>
+        </div>
+        <div>
+            <div>
+                Môžeme vidieť, že zhluk 2 má najvačšiu priemerný počet solárnych panelov, taktiež aj priemerný počet panelov za domácnosť a celkovú plochu panelov.
+                Zhluky 0, 3 majú nízky počet panelov, majú dokonca priemerný počet panelov menej ako 5. Pohľadom na mapu
+                vidíme že zhluk 2 obsahuje najpočetnejší štát Kaliforniu (a druhý najpočetnejší - Floridu) a tým výrazne zvyšuje počet solárnych panelov a ostatné 
+                metriky spojené s počtom panelov. Vzhluk 4 obsahuje Arizonu (tretí najvačší štát z počtu solárnych panelov).
+            </div>
+        </div>
+        <div>
+            <div><img src="./static/data-analysis/clustering_bar/avg_electricity_retail_rate.jpg" alt=""></div>
+            <div><img src="./static/data-analysis/clustering_bar/electricity_consume_total.jpg" alt=""></div>
+            <div><img src="./static/data-analysis/clustering_bar/daily_solar_radiation.jpg" alt=""></div>
+        </div>
+        <div>
+            <div>
+                Cena elektrickej energie je nie je výrazne vyššia, nižšia v roznych zhlukoch, za to celková spotreba elektrickej energie je je výrazne vyššia v zhluku 1.
+                Radiácia zo slnka je nepatrne vyššia v zhluku 2.
+            </div>
+        </div>
+        <div>
+            <div><img src="./static/data-analysis/clustering_bar/cooling_degree_days.jpg" alt=""></div>
+            <div><img src="./static/data-analysis/clustering_bar/heating_degree_days.jpg" alt=""></div>
+            <div><img src="./static/data-analysis/clustering_bar/frost_days.jpg" alt=""></div>
+        </div>
+        <div>
+            <div>
+                Z pohľadu dní kedy treba vykurovať/klimatizovať, môžme vidieť že priemerné dni kedy treba prikurovať
+                odzrkadľuje počet dní kedy je teplota pod 0 stupňov.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+attributes = [
+    {'col': 'state', 'name': 'State'},
+    {'col': 'fips', 'name': 'Fips'},
+    {'col': 'solar_system_count', 'name': 'Solar System Count'},
+    {'col': 'total_panel_area', 'name': 'Total Panel Area'},
+    {'col': 'number_of_solar_system_per_household', 'name': 'Number of Solar Systems per Household'},
+    {'col': 'avg_electricity_retail_rate', 'name': 'Average Electricity Retail Rate'},
+    {'col': 'electricity_consume_total', 'name': 'Electricity Consume Total'},
+    {'col': 'daily_solar_radiation', 'name': 'Daily Solar Radiation'},
+    {'col': 'heating_degree_days', 'name': 'Heating Degree Days'},
+    {'col': 'cooling_degree_days', 'name': 'Cooling Degree Days'},
+    {'col': 'earth_temperature', 'name': 'Earth Temperature'},
+    {'col': 'wind_speed', 'name': 'Wind Speed'},
+    {'col': 'frost_days', 'name': 'Frost Days'},
+]

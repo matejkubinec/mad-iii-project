@@ -6,6 +6,9 @@ Dáta pochádzajú [DeepSolar](http://web.stanford.edu/group/deepsolar/home)
 projektu. DeepSolar je deep learning framework ktorý analyzuje satelitné dáta
 na identifikáciu GPS lokácií a veľkostí solárnych fotovoltalických (PV) panelov.
 
+Datová sada obsahuje 169 atribútov a 72 538 záznamov, z toho 18 435 obsahuje NaN 
+záznamy, tie som pri analýze odstránil.
+
 ## Atribúty (výber)
 
 Datová sada obsahuje 169 atribútov. Niektoré atribúty sú:
